@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import config from './config';
 import cors from 'cors';
+import { UserRouter } from './modules/user/user.route';
 
 // creating an instance of app
 const app = express();
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 // application routers
+app.use('/api/users', UserRouter);
 
 // root endpoint of the app
 app.get('/', (req: Request, res: Response) => {
