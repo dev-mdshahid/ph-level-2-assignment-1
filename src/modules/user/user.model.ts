@@ -107,8 +107,7 @@ export const UserSchema = new Schema<TUser>({
     required: true,
   },
   orders: {
-    type: OrdersSchema,
-    required: true,
+    type: [OrdersSchema],
   },
   isDeleted: {
     type: Boolean,
@@ -124,5 +123,18 @@ UserSchema.pre('save', async function (next) {
   );
   next();
 });
+
+UserSchema.pre('find', async function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+// UserSchema.post('findOne', async function (doc, next) {
+//   if (doc.password) {
+//     delete doc.password;
+//     console.log('inside doc');
+//   }
+//   next();
+// });
 
 export const UserModel = model<TUser>('user', UserSchema);
